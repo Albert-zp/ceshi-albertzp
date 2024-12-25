@@ -1,9 +1,9 @@
 <template>
   <div class="attractions-container">
     <h1 class="page-title">景点管理</h1>
-    <el-button type="primary" class="create-button" @click="goToCreatePage"
-      >新建景点</el-button
-    >
+    <el-button type="primary" class="create-button" @click="goToCreatePage">
+      新建景点
+    </el-button>
 
     <!-- 景点表格 -->
     <el-table
@@ -106,11 +106,11 @@ export default {
     },
     // 页面跳转到创建景点页
     goToCreatePage() {
-      this.$router.push({ name: "CreateAttraction" });
+      this.$router.push({ name: "CreateAttraction" }); // 跳转到新建景点页面
     },
     // 查看景点
     viewAttraction(id) {
-      this.$router.push({ name: "ViewAttraction", params: { id } });
+      this.$router.push({ name: "AttractionDetail", params: { id } }); // 修改路由名称为 AttractionDetail
     },
     // 编辑景点
     editAttraction(id) {

@@ -7,6 +7,11 @@ import AppLayout from "../components/AppLayout.vue"; // 导入 Layout 布局
 import AttractionsPage from "../views/AttractionsPage.vue";
 import UsersPage from "../views/UsersPage.vue";
 import HotCitiesPage from "../views/HotCitiesPage.vue";
+import AttractionDetail from "../views/AttractionDetail.vue"; // 景点详情页面
+import CreateAttraction from "../views/CreateAttraction.vue"; // 导入新建景点页面组件
+import AdminUsers from "../views/AdminUsers.vue";
+import EditAttraction from "../views/EditAttraction.vue";
+import RegionList from "../views/RegionList.vue";
 
 const routes = [
   {
@@ -44,6 +49,36 @@ const routes = [
         component: AttractionsPage,
       },
       {
+        path: "/attractions/:id", // 动态参数 :id 用于传递景点ID
+        name: "AttractionDetail",
+        component: AttractionDetail,
+      },
+      {
+        path: "/create-attraction", // 新建景点的 URL 路径
+        name: "CreateAttraction", // 路由的名字
+        component: CreateAttraction, // 新建景点页面的组件
+      },
+      {
+        path: "/attractions/:id/edit", // 用:id来接收景点ID
+        name: "EditAttraction",
+        component: EditAttraction,
+      },
+      {
+        path: "/regions",
+        name: "RegionList",
+        component: RegionList, // 区域列表页面
+      },
+      {
+        path: "/regions/create",
+        name: "CreateRegion",
+        component: () => import("../views/CreateRegion.vue"), // 新建区域页面
+      },
+      {
+        path: "/regions/:id/edit",
+        name: "EditRegion",
+        component: () => import("../views/EditRegion.vue"), // 编辑区域页面
+      },
+      {
         path: "users",
         name: "Users",
         component: UsersPage,
@@ -52,6 +87,21 @@ const routes = [
         path: "hot-cities",
         name: "HotCities",
         component: HotCitiesPage,
+      },
+      {
+        path: "AdminUsers",
+        name: "AdminUsers",
+        component: AdminUsers,
+      },
+      {
+        path: "AdminRoles",
+        name: "AdminRoles",
+        component: () => import("../views/AdminRoles.vue"),
+      },
+      {
+        path: "AdminPermissions",
+        name: "AdminPermissions",
+        component: () => import("../views/AdminPermissions.vue"),
       },
     ],
   },

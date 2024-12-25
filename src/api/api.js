@@ -14,7 +14,6 @@ const api = axios.create({
 
 // 获取所有景点
 export const getAttractions = () => {
-  // 确保函数名是 getAttractions
   return api
     .get("/attractions")
     .then((response) => response.data)
@@ -35,15 +34,38 @@ export const getAttractionsByRegion = (regionId) => {
     });
 };
 
-// 创建或更新景点
-export const saveOrUpdateAttraction = (attraction) => {
+// 获取单个景点的详情
+export const getAttractionDetails = (id) => {
   return api
-    .post("/attractions", attraction)
+    .get(`/attractions/${id}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error("保存或更新景点失败", error);
+      console.error(`获取景点 ${id} 失败`, error);
       throw error;
     });
+};
+
+// 创建或更新景点
+export const saveOrUpdateAttraction = (attraction) => {
+  // 如果景点有 id，则执行更新操作
+  if (attraction.id) {
+    return api
+      .put(`/attractions/${attraction.id}`, attraction)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("更新景点失败", error.response || error);
+        throw error;
+      });
+  } else {
+    // 如果没有 id，则执行创建操作
+    return api
+      .post("/attractions", attraction)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("创建景点失败", error.response || error);
+        throw error;
+      });
+  }
 };
 
 // 删除景点
@@ -52,10 +74,11 @@ export const deleteAttraction = (id) => {
     .delete(`/attractions/${id}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error(`删除景点 ${id} 失败`, error);
+      console.error(`删除景点 ${id} 失败`, error.response || error);
       throw error;
     });
 };
+
 // 获取所有用户
 export const getUsers = () => {
   return api
