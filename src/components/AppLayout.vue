@@ -22,7 +22,8 @@
           <el-menu-item index="5" @click="goToAccountManagement"
             >账号管理</el-menu-item
           >
-          <!-- 新增账号管理入口 -->
+          <el-menu-item index="6" @click="goToRegions">区域管理</el-menu-item>
+          <!-- 新增区域管理入口 -->
         </el-menu>
       </el-aside>
 
@@ -58,6 +59,9 @@ export default {
     goToAccountManagement() {
       this.$router.push("/dashboard/AdminUsers"); // 跳转到账号管理页面
     },
+    goToRegions() {
+      this.$router.push("/dashboard/regionlist"); // 跳转到区域管理页面
+    },
     handleMenuSelect(index) {
       this.activeMenu = index; // 更新激活的菜单项
     },
@@ -74,6 +78,8 @@ export default {
         this.activeMenu = "4"; // 景点管理
       } else if (newPath === "/dashboard/AdminUsers") {
         this.activeMenu = "5"; // 账号管理
+      } else if (newPath === "/dashboard/regions") {
+        this.activeMenu = "6"; // 区域管理
       }
     },
   },

@@ -1,5 +1,4 @@
 // src/api.js
-
 import axios from "axios";
 
 const BASE_URL = "http://47.95.30.36:8080/api"; // 根据实际服务端的URL修改
@@ -47,22 +46,22 @@ export const getAttractionDetails = (id) => {
 
 // 创建或更新景点
 export const saveOrUpdateAttraction = (attraction) => {
-  // 如果景点有 id，则执行更新操作
   if (attraction.id) {
+    // 更新景点
     return api
       .put(`/attractions/${attraction.id}`, attraction)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("更新景点失败", error.response || error);
+        console.error("更新景点失败", error);
         throw error;
       });
   } else {
-    // 如果没有 id，则执行创建操作
+    // 创建景点
     return api
       .post("/attractions", attraction)
       .then((response) => response.data)
       .catch((error) => {
-        console.error("创建景点失败", error.response || error);
+        console.error("创建景点失败", error);
         throw error;
       });
   }
@@ -74,18 +73,65 @@ export const deleteAttraction = (id) => {
     .delete(`/attractions/${id}`)
     .then((response) => response.data)
     .catch((error) => {
-      console.error(`删除景点 ${id} 失败`, error.response || error);
+      console.error(`删除景点 ${id} 失败`, error);
       throw error;
     });
 };
 
-// 获取所有用户
-export const getUsers = () => {
+// 获取所有区域
+export const getRegions = () => {
   return api
-    .get("/users")
+    .get("/regions")
     .then((response) => response.data)
     .catch((error) => {
-      console.error("获取用户失败", error);
+      console.error("获取区域列表失败", error);
       throw error;
+    });
+};
+
+// 获取单个区域的详细信息
+export const getRegionDetails = (id) => {
+  return api
+    .get(`/regions/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`获取区域 ${id} 失败`, error);
+      throw error;
+    });
+};
+
+// 创建区域
+export const createRegion = (region) => {
+  return api
+    .post("/regions", region)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("创建区域失败", error);
+      throw error;
+    });
+};
+
+// 更新区域
+export const updateRegion = (region) => {
+  if (region.id) {
+    return api
+      .put(`/regions/${region.id}`, region)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("更新区域失败", error);
+        throw error;
+      });
+  } else {
+    throw new Error("更新时未提供有效的区域ID");
+  }
+};
+// 删除区域
+export const deleteRegion = (id) => {
+  return api
+    .delete(`/regions/${id}`) // 调用删除区域的接口
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`删除区域 ${id} 失败`, error);
+      throw error; // 错误处理
     });
 };

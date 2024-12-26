@@ -11,7 +11,9 @@ import AttractionDetail from "../views/AttractionDetail.vue"; // 景点详情页
 import CreateAttraction from "../views/CreateAttraction.vue"; // 导入新建景点页面组件
 import AdminUsers from "../views/AdminUsers.vue";
 import EditAttraction from "../views/EditAttraction.vue";
-import RegionList from "../views/RegionList.vue";
+import CreateRegion from "../views/CreateRegion.vue";
+import EditRegion from "../views/EditRegion.vue";
+import RegionList from "../views/RegionList.vue"; // 区域管理页面
 
 const routes = [
   {
@@ -64,19 +66,19 @@ const routes = [
         component: EditAttraction,
       },
       {
-        path: "/regions",
+        path: "regionlist",
         name: "RegionList",
-        component: RegionList, // 区域列表页面
+        component: RegionList,
       },
       {
         path: "/regions/create",
         name: "CreateRegion",
-        component: () => import("../views/CreateRegion.vue"), // 新建区域页面
+        component: CreateRegion,
       },
       {
-        path: "/regions/:id/edit",
+        path: "/regions/edit/:id",
         name: "EditRegion",
-        component: () => import("../views/EditRegion.vue"), // 编辑区域页面
+        component: EditRegion,
       },
       {
         path: "users",
