@@ -89,6 +89,28 @@ export const getRegions = () => {
     });
 };
 
+// 获取指定级别的区域
+export const getRegionsByLevel = (level) => {
+  return api
+    .get(`/regions/level`, { params: { level } }) // 修改后的路径
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("获取城市数据失败", error);
+      throw error;
+    });
+};
+
+// 获取指定父级区域的子区域
+export const getRegionsByParentId = (parentId) => {
+  return api
+    .get(`/regions/parent/${parentId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`获取父级区域 ${parentId} 的子区域失败`, error);
+      throw error;
+    });
+};
+
 // 获取单个区域的详细信息
 export const getRegionDetails = (id) => {
   return api
@@ -125,13 +147,99 @@ export const updateRegion = (region) => {
     throw new Error("更新时未提供有效的区域ID");
   }
 };
+
 // 删除区域
 export const deleteRegion = (id) => {
   return api
-    .delete(`/regions/${id}`) // 调用删除区域的接口
+    .delete(`/regions/${id}`)
     .then((response) => response.data)
     .catch((error) => {
       console.error(`删除区域 ${id} 失败`, error);
-      throw error; // 错误处理
+      throw error;
+    });
+};
+
+// 获取所有热门城市
+export const getAllHotCities = () => {
+  return api
+    .get("/hot-cities/")
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("获取所有热门城市失败", error);
+      throw error;
+    });
+};
+
+// 获取指定区域的热门城市列表（分页）
+export const getHotCitiesByRegion = (regionId, page = 0, size = 10) => {
+  return api
+    .get(`/hot-cities/region/${regionId}`, {
+      params: { page, size },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`获取区域 ${regionId} 的热门城市失败`, error);
+      throw error;
+    });
+};
+
+// 获取指定排名的热门城市（分页）
+export const getHotCitiesByRank = (hotRank, page = 0, size = 10) => {
+  return api
+    .get(`/hot-cities/rank/${hotRank}`, {
+      params: { page, size },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`获取热度排名为 ${hotRank} 的热门城市失败`, error);
+      throw error;
+    });
+};
+
+// 添加热门城市
+export function addHotCity(data) {
+  return api
+    .post("/hot-cities/", data) // 确保路径正确
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("添加热门城市失败", error);
+      throw error;
+    });
+}
+
+// 更新热门城市
+export const updateHotCity = (hotCity) => {
+  if (hotCity.id) {
+    return api
+      .put(`/hot-cities/${hotCity.id}`, hotCity)
+      .then((response) => response.data)
+      .catch((error) => {
+        console.error("更新热门城市失败", error);
+        throw error;
+      });
+  } else {
+    throw new Error("更新时未提供有效的热门城市ID");
+  }
+};
+
+// 删除热门城市
+export const deleteHotCity = (id) => {
+  return api
+    .delete(`/hot-cities/${id}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`删除热门城市 ${id} 失败`, error);
+      throw error;
+    });
+};
+
+// 根据区域ID删除所有热门城市
+export const deleteHotCitiesByRegionId = (regionId) => {
+  return api
+    .delete(`/hot-cities/region/${regionId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`删除区域 ${regionId} 的所有热门城市失败`, error);
+      throw error;
     });
 };

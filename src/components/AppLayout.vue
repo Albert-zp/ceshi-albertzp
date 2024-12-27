@@ -23,6 +23,9 @@
             >账号管理</el-menu-item
           >
           <el-menu-item index="6" @click="goToRegions">区域管理</el-menu-item>
+          <el-menu-item index="6" @click="goToHotCities"
+            >热门城市管理</el-menu-item
+          >
           <!-- 新增区域管理入口 -->
         </el-menu>
       </el-aside>
@@ -62,6 +65,9 @@ export default {
     goToRegions() {
       this.$router.push("/dashboard/regionlist"); // 跳转到区域管理页面
     },
+    goToHotCities() {
+      this.$router.push("/dashboard/hot-cities"); // 跳转到热门城市管理页面
+    },
     handleMenuSelect(index) {
       this.activeMenu = index; // 更新激活的菜单项
     },
@@ -80,6 +86,8 @@ export default {
         this.activeMenu = "5"; // 账号管理
       } else if (newPath === "/dashboard/regions") {
         this.activeMenu = "6"; // 区域管理
+      } else if (newPath === "/dashboard/hot-cities") {
+        this.activeMenu = "7"; // 热门城市管理
       }
     },
   },
