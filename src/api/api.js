@@ -92,7 +92,7 @@ export const getRegions = () => {
 // 获取指定级别的区域
 export const getRegionsByLevel = (level) => {
   return api
-    .get(`/regions/level`, { params: { level } }) // 修改后的路径
+    .get(`/regions/level`, { params: { level } })
     .then((response) => response.data)
     .catch((error) => {
       console.error("获取城市数据失败", error);
@@ -199,7 +199,7 @@ export const getHotCitiesByRank = (hotRank, page = 0, size = 10) => {
 // 添加热门城市
 export function addHotCity(data) {
   return api
-    .post("/hot-cities/", data) // 确保路径正确
+    .post("/hot-cities/", data)
     .then((response) => response.data)
     .catch((error) => {
       console.error("添加热门城市失败", error);
@@ -240,6 +240,64 @@ export const deleteHotCitiesByRegionId = (regionId) => {
     .then((response) => response.data)
     .catch((error) => {
       console.error(`删除区域 ${regionId} 的所有热门城市失败`, error);
+      throw error;
+    });
+};
+
+// 图片相关接口
+
+// 获取某个景点的所有图片（分页）
+export const getImagesByAttractionId = (attractionId, page = 0, size = 10) => {
+  return api
+    .get(`/images/attraction/${attractionId}`, {
+      params: { page, size },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`获取景点 ${attractionId} 的图片失败`, error);
+      throw error;
+    });
+};
+
+// 获取某个区域的所有图片（分页）
+export const getImagesByRegionId = (regionId, page = 0, size = 10) => {
+  return api
+    .get(`/images/region/${regionId}`, {
+      params: { page, size },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`获取区域 ${regionId} 的图片失败`, error);
+      throw error;
+    });
+};
+
+// 上传图片
+export const uploadImage = (file, attractionId) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("attractionId", attractionId);
+
+  return api
+    .post("/images/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error("上传图片失败", error);
+      throw error;
+    });
+};
+
+// 删除图片
+export const deleteImage = (imageId) => {
+  return api
+    .delete(`/images/${imageId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error(`删除图片 ${imageId} 失败`, error);
       throw error;
     });
 };

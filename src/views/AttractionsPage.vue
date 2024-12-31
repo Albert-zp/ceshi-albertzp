@@ -63,54 +63,69 @@
 </template>
 
 <script>
-import { getAttractions, deleteAttraction } from "../api/api"; // 引入请求方法
+import { getAttractions, deleteAttraction, getRegions } from "../api/api";
 
 export default {
   name: "AttractionsPage",
   data() {
     return {
-      attractions: [], // 用来存储景点数据
+      attractions: [], // 存储景点数据
+      regionNameMap: {}, // 缓存区域名称映射
     };
   },
   created() {
-    this.fetchAttractions(); // 组件加载时调用
+    this.fetchAttractions(); // 组件加载时获取景点数据
+    this.fetchRegionNames(); // 同时加载区域名称映射
   },
   methods: {
     // 获取景点列表
     fetchAttractions() {
-      getAttractions() // 调用 API 获取景点数据
+      getAttractions()
         .then((response) => {
-          this.attractions = response; // 直接将返回数据赋值给 attractions
+          this.attractions = response;
         })
         .catch((error) => {
-          console.error("获取景点列表失败", error); // 错误处理
+          console.error("获取景点列表失败", error);
+        });
+    },
+    // 获取区域名称映射
+    fetchRegionNames() {
+      getRegions()
+        .then((response) => {
+          this.regionNameMap = response.reduce((map, region) => {
+            map[region.id] = region.name;
+            return map;
+          }, {});
+        })
+        .catch((error) => {
+          console.error("获取区域名称失败", error);
         });
     },
     // 删除景点
     deleteAttraction(id) {
-      deleteAttraction(id) // 调用删除接口
+      deleteAttraction(id)
         .then(() => {
-          this.fetchAttractions(); // 删除成功后重新获取景点列表
+          this.fetchAttractions();
           this.$message({
             type: "success",
             message: "删除成功",
           });
         })
         .catch((error) => {
-          console.error("删除景点失败", error); // 错误处理
+          console.error("删除景点失败", error);
         });
     },
-    // 格式化地区字段（根据你的需求，可能需要修改）
+    // 格式化区域字段
     formatRegion(row, column, cellValue) {
-      return `区域 ${cellValue}`; // 这里只是示例，假设 cellValue 是区域ID，你可以根据实际情况调整
+      return this.regionNameMap[cellValue] || "未知区域";
     },
     // 页面跳转到创建景点页
     goToCreatePage() {
-      this.$router.push({ name: "CreateAttraction" }); // 跳转到新建景点页面
+      this.$router.push({ name: "CreateAttraction" });
     },
     // 查看景点
     viewAttraction(id) {
-      this.$router.push({ name: "AttractionDetail", params: { id } }); // 修改路由名称为 AttractionDetail
+      this.$router.push({ name: "AttractionDetail", params: { id } });
     },
     // 编辑景点
     editAttraction(id) {
@@ -139,7 +154,7 @@ export default {
 .el-table {
   margin-top: 20px;
   border: 1px solid #e0e0e0;
-  border-collapse: collapse; /* 确保表格的合并 */
+  border-collapse: collapse;
 }
 
 .el-table-column {
@@ -148,7 +163,7 @@ export default {
 
 .el-table th,
 .el-table td {
-  padding: 12px 10px; /* 确保表头和表格数据的 padding 一致 */
+  padding: 12px 10px;
 }
 
 .el-table th {

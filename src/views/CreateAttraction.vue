@@ -56,11 +56,17 @@
             { required: true, message: '请选择所属区域', trigger: 'change' },
           ]"
         >
-          <el-select v-model="form.regionId" placeholder="请选择所属区域">
-            <el-option label="区域1" value="1"></el-option>
-            <el-option label="区域2" value="2"></el-option>
-            <el-option label="区域3" value="3"></el-option>
-            <!-- 这里可以根据实际情况动态加载区域数据 -->
+          <el-select
+            v-model="form.regionId"
+            filterable
+            placeholder="请选择所属区域"
+          >
+            <el-option
+              v-for="region in regions"
+              :key="region.id"
+              :label="region.name"
+              :value="region.id"
+            ></el-option>
           </el-select>
         </el-form-item>
 
@@ -81,7 +87,7 @@
 </template>
 
 <script>
-import { saveOrUpdateAttraction } from "../api/api"; // 引入保存接口
+import { saveOrUpdateAttraction, getRegionsByLevel } from "../api/api"; // 引入保存接口和获取区域接口
 
 export default {
   data() {
@@ -94,9 +100,24 @@ export default {
       },
       fileList: [],
       isSubmitting: false, // 防止重复提交
+      regions: [], // 存储动态加载的区域数据
     };
   },
+  created() {
+    this.fetchRegions(); // 页面加载时获取区域数据
+  },
   methods: {
+    // 获取区域数据
+    fetchRegions() {
+      getRegionsByLevel(2) // 获取市级区域
+        .then((response) => {
+          this.regions = response; // 存储返回的数据
+        })
+        .catch((error) => {
+          console.error("获取区域数据失败", error);
+        });
+    },
+
     // 提交表单
     async submitForm() {
       this.$refs.formRef.validate(async (valid) => {
